@@ -2,13 +2,11 @@
 
 ## How to Become a Super Representative
 
-In TRON network, any account can apply to become a witness. Every account can vote for witnesses.
+Block producers in the TRON network, also called super representatives, are elected by voting. Any account can apply to become a super representative candidate by paying 9999 TRX and then participate in the super representative election. Any account can vote for super representative candidates, and the top 27 candidates with the most votes become super representatives, and they have the right to produce blocks. Super representative needs to run a TRON node to participate in block production, and will also receive block rewards and voting rewards. Voters who vote to super representatives will receive voting rewards.
 
-The top 27 witnesses are called SR, the witnesses from 28th to 127th are called Partner, the witnesses after 128th are called Candidates. Only SR can produce blocks.
+The super representative candidates ranked 28th to 127th are also called super representative partners. Super representative partners do not participate in block production and packaging transactions, but will receive voting rewards. Voters who vote to super representative partners will also receive voting rewards.
 
-The votes will be counted every 6 hours, so super representatives may also change every 6 hours.
-
-To prevent vicious attack, TRON network burns 9999 TRX from the account that applies to become a super representative candidate.
+The votes will be counted every 6 hours, so super representatives and super representative partners will be changed every 6 hours.
 
 ## Super Representative Election
 
@@ -19,20 +17,20 @@ Note: Only your latest vote will be counted in TRON network which means your pre
 Example (Using wallet-cli):
 
 ```console
-> freezebalance 10,000,000 3 // Stake 10 TRX to get 10 TRON Power(TP)
-> votewitness witness1 4 witness2 6 // Vote 4 votes for witness1, 6 votes for witness2
-> votewitness witness1 3 witness2 7 // Vote 3 votes for witness1, 7 votes for witness2
+> freezebalancev2 10,000,000 3 // Stake 10 TRX to get 10 TRON Power(TP)
+> votewitness SR1 4 SR2 6 // Vote 4 votes for SR1, 6 votes for SR2
+> votewitness SR1 3 SR2 7 // Vote 3 votes for SR1, 7 votes for SR2
 ```
 
-The final output above is: Vote 3 votes for witness1, 7 votes for witness2
+The final output above is: Vote 3 votes for SR1, 7 votes for SR2.
 
-### Witnesses Brokerage
+### Super Representatives Brokerage
 
-The default ratio is 20%, which can be modified by the witnesses.
+The default ratio is 20%. Super representatives and super representative partners can query the brokerage ratio through the `wallet/getBrokerage` interface, and can also modify the brokerage ratio through the `wallet/updateBrokerage` interface.
 
-If a witness get 20% of the reward, and the other 80% will be awarded to the voters. If the brokerage ratio is set to 100%, the rewards are all obtained by the witness; if set to 0, the rewards are all sent to the voters.
+If a SR(Super Representatives) get 20% of the reward, and the other 80% will be awarded to the voters. If the brokerage ratio is set to 100%, the rewards are all obtained by the SR; if set to 0, the rewards are all sent to the voters.
 
-## Reward for Witnesses
+## Reward for SR(Super Representatives)
 
 ### Votes Reward
 
@@ -54,13 +52,13 @@ Reward may be less than the theoretical number due to missed blocks and maintena
 
 ## Reward for Voters
 
-If you vote for a Super Representative:
+If you vote for a SR(Super Representative):
 
-the daily Voter Rewards = (((the number of votes you vote to a witness) * 4,608,000 / total votes) * 80%) + ((460,800 / 27) * 80%) * (the number of votes you vote to a witness) / (the total number of votes a witness receives) TRX
+the daily Voter Rewards = (((the number of votes you vote to a SR) * 4,608,000 / total votes) * 80%) + ((460,800 / 27) * 80%) * (the number of votes you vote to a SR) / (the total number of votes a SR receives) TRX
 
 If you vote for a Partner:
 
-the daily Voter Rewards = (((the number of votes you vote to a witness) * 4,608,000 / total votes) * 80%) TRX
+the daily Voter Rewards = (((the number of votes you vote to a SR) * 4,608,000 / total votes) * 80%) TRX
 
 ## Committee
 
@@ -72,54 +70,16 @@ Committee can modify the TRON network parameters, like transacton fees, block pr
 
 Only SRs, Partners and Candidates can create a proposal.
 
-The network parameters can be modified([min,max]).
-
-{0,1}: 1 means 'allowed' or 'actived', 0 means 'disallow', 'disable' or 'no'.
-
-|  #    | Command  |  Value  |
-|  ----  | ----    | ---- |
-|  0     | MaintenanceTimeInterval <br> (To modify the maintenance interval of SR)  | 6  Hours <br> [3 * 27, 24 * 3600] s |
-|  1     | AccountUpgradeCost <br> (To modify the cost of applying for SR account) | 9999  TRX <br> [0, 100000000000] TRX |
-|  2     | CreateAccountFee <br> (To modify the account creation fee) | 0.1  TRX <br> [0, 100000000000] TRX |
-|  3     | TransactionFee <br> (To modify the amount of TRX used to gain extra bandwidth) | 1000  Sun/Byte <br> [0, 100000000000] TRX |
-|  4     | AssetIssueFee <br> (To modify asset issuance fee) | 1024  TRX <br> [0, 100000000000] TRX|
-|  5     | WitnessPayPerBlock <br> (To modify SR block generation reward) | 16 TRX <br> [0, 100000000000] TRX |
-|  6     | WitnessStandbyAllowance <br> (To modify the rewards given to the top 27 SRs and <br> the following 100 partners) | 115200  TRX <br> [0, 100000000000] TRX |
-|  7     | CreateNewAccountFeeInSystemContract <br> (To modify the cost of account creation) | 1 TRX  |
-|  8     | CreateNewAccountBandwidthRate <br> (To modify the consumption of bandwidth of account creation) | 1&nbsp;Bandwidth/Byte |
-|  9     | AllowCreationOfContracts <br> (To activate the Virtual Machine (VM)) | 1 <br> {0, 1} |
-|  10   | RemoveThePowerOfTheGr <br> (To remove the GR Genesis votes) |  1 <br> {0, 1}|
-|  11   | EnergyFee <br> (To modify the fee of 1 energy) | 140 Sun <br> [0, 100000000000] TRX |
-|  12   | ExchangeCreateFee <br> (To modify the cost of trading pair creation) | 1024 TRX <br> [0, 100000000000] TRX |
-|  13   | MaxCpuTimeOfOneTx <br> (To modify the maximum execution time of one transaction) | 50 ms <br> [0, 1000] ms |
-|  14   | AllowUpdateAccountName <br> (To allow to change the account name) | 0 <br> {0, 1} |
-|  15   | AllowSameTokenName <br> (To allow the same token name) | 1 <br> {0, 1} |
-|  16   | AllowDelegateResource <br> (To allow resource delegation) | 1 <br> {0, 1} |
-|  18   | AllowTvmTransferTrc10 <br> (To allow the TRC-10 token transfer in smart contracts) | 1 <br> {0, 1} |
-|  19   | TotalEnergyCurrentLimit <br> (To modify current total energy limit) | 50000000000 |
-|  20   | AllowMultiSign <br> (To allow the initiation of multi-signature) | 1 <br> {0, 1} |
-|  21   | AllowAdaptiveEnergy <br> (To allow adaptive adjustment for total Energy) | 0 <br> {0, 1} |
-|  22   | UpdateAccountPermissionFee <br> (To modify the fee for updating account permission) | 100 TRX |
-|  23   | MultiSignFee <br> (To modify the fee for multi-signature) | 1 TRX |
-|  24   | AllowProtoFilterNum <br> (To enable protocol optimization) | 0 <br> {0, 1} |
-|  26   | AllowTvmConstantinople <br> (To support the new commands of Constantinople) | 1 <br> {0, 1} |
-|  27   | AllowShieldedTransaction <br> (To enable shielded transaction) | 0 <br> {0, 1} |
-|  28   | ShieldedTransactionFee <br> (To modify shielded transaction fee) | 10 TRX <br> [0, 10000] TRX |
-|  29   | AdaptiveResourceLimitMultiplier <br> (To modify the adaptive energy limit multiplier) | 1000 <br> [1, 10000] |
-|  30    | ChangeDelegation <br> (Propose to support the decentralized vote dividend) | 1 <br> {0, 1} |
-|  31    | Witness127PayPerBlock <br> (Propose to modify the block voting rewards given to <br> the top 27 SRs and the following 100 partners) | 160  TRX <br> [0, 100000000000] TRX |
-|  32    | AllowTvmSolidity059 <br> (To allow TVM to support solidity compiler 0.5.9) | 0 <br> {0, 1} |
-|  33    | AdaptiveResourceLimitTargetRatio <br> (To modify the target energy limit) | 10 <br> [1, 1000] |
+Please refer to [here](https://tronscan.org/#/sr/committee) for TRON network dynamic parameters and their values.
 
 Example (Using wallet-cli):
 
 ```console
 > createproposal id value
-# id: the serial number (0 ~ 33)
+# id: the serial number
 # value: the parameter value
 ```
 
-Note: In TRON network, 1 TRX = 1_000_000 SUN
 
 ### 3. Vote for a Proposal
 

@@ -20,14 +20,14 @@ storage {
   # block_KDB, peers, properties, recent-block, trans,
   # utxo, votes, witness, witness_schedule.
 
-  # Otherwise, db configs will remain defualt and data will be stored in
+  # Otherwise, db configs will remain default and data will be stored in
   # the path of "output-directory" or which is set by "-d" ("--output-directory").
 
   # Attention: name is a required field that must be set !!!
   properties = [
     {
       name = "account",
-      path = "/path/to/accout",   // relative or absolute path
+      path = "/path/to/account",   // relative or absolute path
       createIfMissing = true,
       paranoidChecks = true,
       verifyChecksums = true,
@@ -43,7 +43,7 @@ storage {
 
 ```
 
-As shown in the example above, the data of database `accout` will be stored in the path of `/path/to/accout/database` while the index be stored in `/path/to/accout/index`. And, the example also shows our default value of LevelDB options from `createIfMissing` to `maxOpenFiles`. You can just refer to the docs of [LevelDB](https://github.com/google/leveldb/blob/master/doc/index.md#performance) to figure out details of these options.
+As shown in the example above, the data of database `account` will be stored in the path of `/path/to/account/database` while the index be stored in `/path/to/account/index`. And, the example also shows our default value of LevelDB options from `createIfMissing` to `maxOpenFiles`. You can just refer to the docs of [LevelDB](https://github.com/google/leveldb/blob/master/doc/index.md#performance) to figure out details of these options.
 
 ## gRPC
 
@@ -92,7 +92,7 @@ node.backup {
 ```
 policy: 
 1. the one which synchronized first will become master.
-2. if synchronization is completed at the same time, the one which with big priority will become master.
+2. if synchronization is completed at the same time, the one with big priority will become master.
 
 E.g. create backups for node A(192.168.0.100) and node B(192.168.0.100 ):
 node A's configuration:
